@@ -5,7 +5,9 @@
 from sheets_scripts import main
 pmid = '35645033'
 main.pubmed_to_entry(pmid)
+main.pubmed_to_entry()
 
+main.doi_to_entry()
 
 
 from sheets_scripts import main
@@ -31,6 +33,12 @@ from datetime import datetime
 #---------------------
 import pyperclip
 import pandas as pd
+
+from pubmed import API as PubmedAPI
+pubmed_api = PubmedAPI(verbose=True)
+
+from crossref.api import API as CrossrefAPI
+crossref_api = CrossrefAPI()
 
 
 #Local
@@ -62,20 +70,62 @@ class JimWorkSheet:
         pass
 
     
-
-
-
-from pubmed import API
-api = API(verbose=True)
-
 #pyperclip.copy("a\tb\tc")
+
+def doi_to_entry(doi):
+    
+    d = crossref_api.doi_info(doi)
+    
+    cells = []
+    
+    #0 - 1st entry
+    #0 - year component
+    year = d['published-print']['date-parts'][0][0]
+    
+    cells.append(str(year))
+    
+    #Author string
+    #1 - last
+    #2 - last, last
+    #3 - last, last, last
+    #4 - last et al. (last)
+    
+    n_authors = len(d.author)
+    if n_authors == 1:
+        author_str = d.author[0]['family']
+    elif n_authors == 2:
+        author_str = d.author[0]['family'] + ', ' + d.author[1]['family']
+    elif n_authors == 3:
+        author_str = d.author[0]['family'] + ', ' + d.author[1]['family'] + ', ' + d.authors[2]['family']
+    else:
+        author_str = d.author[0]['family'] + ' et al. (' + d.author[-1]['family'] + ')'
+    
+    cells.append(author_str)
+    
+    cells.append(d.title[0])
+    
+    cells.append(d['container-title'][0])
+    
+    cells.append(doi)
+    
+    now = datetime.now()
+
+    current_date = now.strftime("%m/%d/%Y")
+    
+    cells.append(current_date)
+    
+    final_string = "\t".join(cells)
+    
+    pyperclip.copy(final_string)
 
 def pubmed_to_entry(pmid):
     
     #- retrieve info
     #- 
     
-    summary = api.pubmed.summary(pmid)
+    pmid = str(pmid)
+    
+    summary = pubmed_api.pubmed.summary(pmid)
     d = summary.docs[0]
     
     #cells
