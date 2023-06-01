@@ -2,6 +2,12 @@
 # -*- coding: utf-8 -*-
 """
 
+Requires:
+    - gspread
+    - Scholar Tools - pubmed and crossref - TODO add links
+    - pyperclip
+
+
 from sheets_scripts import main
 pmid = '35645033'
 main.pubmed_to_entry(pmid)
@@ -117,6 +123,10 @@ def doi_to_entry(doi):
     final_string = "\t".join(cells)
     
     pyperclip.copy(final_string)
+    
+    print(cells[0])
+    print(cells[1])
+
 
 def pubmed_to_entry(pmid):
     
@@ -172,6 +182,9 @@ def pubmed_to_entry(pmid):
     final_string = "\t".join(cells)
     
     pyperclip.copy(final_string)
+    
+    print(cells[0])
+    print(cells[1])
 
     
     
