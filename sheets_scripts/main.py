@@ -86,7 +86,11 @@ def doi_to_entry(doi):
     
     #0 - 1st entry
     #0 - year component
-    year = d['published-print']['date-parts'][0][0]
+    
+    if 'published-print' in d:
+        year = d['published-print']['date-parts'][0][0]
+    else:
+        year = d['published']['date-parts'][0][0]
     
     cells.append(str(year))
     
