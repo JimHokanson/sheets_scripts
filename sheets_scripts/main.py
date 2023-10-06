@@ -91,6 +91,7 @@ def doi_to_entry(doi):
         year = d['published-print']['date-parts'][0][0]
     else:
         year = d['published']['date-parts'][0][0]
+
     
     cells.append(str(year))
     
