@@ -87,7 +87,8 @@ def doi_to_entry(doi):
     #0 - 1st entry
     #0 - year component
     
-    if 'published-print' in d:
+    #TODO: Should implement 'in' for the object
+    if 'published-print' in d.json:
         year = d['published-print']['date-parts'][0][0]
     else:
         year = d['published']['date-parts'][0][0]
@@ -107,7 +108,7 @@ def doi_to_entry(doi):
     elif n_authors == 2:
         author_str = d.author[0]['family'] + ', ' + d.author[1]['family']
     elif n_authors == 3:
-        author_str = d.author[0]['family'] + ', ' + d.author[1]['family'] + ', ' + d.authors[2]['family']
+        author_str = d.author[0]['family'] + ', ' + d.author[1]['family'] + ', ' + d.author[2]['family']
     else:
         author_str = d.author[0]['family'] + ' et al. (' + d.author[-1]['family'] + ')'
     
