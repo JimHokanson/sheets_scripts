@@ -22,7 +22,9 @@ sheet = file.get_sheet('main')
 
 
 
-
+TODO: better unicode support:
+DOI: 10.1007/BF00372335
+    mangles Lindström
 
 
 """
